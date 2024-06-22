@@ -81,28 +81,26 @@ def nextitem():
     except:
         messagebox.showinfo("Title", "SORRY!...NO MORE RECORDS")
 
-    def previousitem():
-        global var
-        var = var - 1
-        f.seek(var)
-        try:
-            z = f.readlines()
-            xyz = z[var]
-            v = list(xyz.split(" "))
-            entry1.delete(0, END)
-            entry2.delete(0, END)
-            entry3.delete(0, END)
-            entry4.delete(0, END)
-            entry5.delete(0, END)
-
-            entry1.insert(0, str(v[0]))
-            entry2.insert(0, str(v[1]))
-            entry3.insert(0, str(v[2]))
-            entry4.insert(0, str(v[3]))
-            entry5.insert(0, str(v[4]))
-        except:
-            messagebox.showinfo("Title", "SORRY!...NO MORE RECORDS")
-
+def previousitem():
+    global var
+    var = var - 1
+    f.seek(var)
+    try:
+        z = f.readlines()
+        xyz = z[var]
+        v = list(xyz.split(" "))
+        entry1.delete(0, END)
+        entry2.delete(0, END)
+        entry3.delete(0, END)
+        entry4.delete(0, END)
+        entry5.delete(0, END)
+        entry1.insert(0, str(v[0]))
+        entry2.insert(0, str(v[1]))
+        entry3.insert(0, str(v[2]))
+        entry4.insert(0, str(v[3]))
+        entry5.insert(0, str(v[4]))
+    except:
+        messagebox.showinfo("Title", "SORRY!...NO MORE RECORDS")
 
 def lastitem():
     global var
@@ -130,6 +128,55 @@ def lastitem():
         entry5.insert(0, str(v[4]))
     except:
         messagebox.showinfo("Title", "SORRY!...NO MORE RECORDS")
+
+def updateitem():
+
+    e1 = entry1.get()
+    e2 = entry2.get()
+    e3 = entry3.get()
+    e4 = entry4.get()
+    e5 = entry5.get()
+    with open(r"database_proj") as f1, open(r"database_proj1", "w") as working:
+        for line in f1:
+            if str(e1) not in line:
+                working.write(line)
+            else:
+                working.write('{0} {1} {2} {3} {4}'.format(str(e1), e2, e3, str(e4), e5))
+    os.remove(r"database_proj")
+    os.rename(r"database_proj1", r"database_proj")
+
+
+def searchitem():
+    i=0
+    e11 = entry1.get()
+    with open(r"database_proj") as working:
+        for line in working:
+            i=i+1
+            if str(e11) in line:
+                break
+        try:
+            v = list(line.split(" "))
+            entry1.delete(0, END)
+            entry2.delete(0, END)
+            entry3.delete(0, END)
+            entry4.delete(0, END)
+            entry5.delete(0, END)
+            entry1.insert(0, str(v[0]))
+            entry2.insert(0, str(v[1]))
+            entry3.insert(0, str(v[2]))
+            entry4.insert(0, str(v[3]))
+            entry5.insert(0, str(v[4]))
+        except:
+            messagebox.showinfo("Title", "error end of file")
+    working.close()
+
+
+def clearitem():
+    entry1.delete(0, END)
+    entry2.delete(0, END)
+    entry3.delete(0, END)
+    entry4.delete(0, END)
+    entry5.delete(0, END)
 
 label0= Label(root,text="PHARMACY MANAGEMENT SYSTEM ",bg="black",fg="white",font=("Times", 30))
 label1=Label(root,text="ENTER ITEM NAME",bg="red",relief="ridge",fg="white",font=("Times", 12),width=25)
